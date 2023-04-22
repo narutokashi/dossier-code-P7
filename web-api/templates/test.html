@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Test Results</title>
+	<style>
+		body {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			height: 100vh;
+			margin: 0;
+			padding: 0;
+			font-family: Arial, sans-serif;
+		}
+		h1 {
+			font-size: 36px;
+			font-weight: bold;
+			margin-bottom: 30px;
+		}
+		table {
+			border-collapse: collapse;
+			margin-top: 30px;
+			font-size: 18px;
+			text-align: center;
+			box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+			width: 80%;
+		}
+		th, td {
+			padding: 10px;
+			border-bottom: 1px solid #ddd;
+		}
+		th {
+			background-color: #f2f2f2;
+			font-weight: bold;
+		}
+		button {
+			background-color: #4CAF50;
+			color: white;
+			padding: 10px 20px;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			transition: background-color 0.3s ease;
+		}
+		button:hover {
+			background-color: #3e8e41;
+		}
+	</style>
+<head>
+	<title>Test Prediction Page</title>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+	<h1>Test Prediction Page</h1>
+	<p>Please enter the client ID:</p>
+	<input type="text" id="client_id" name="client_id" placeholder="Enter client ID here..." required>
+	<button type="button" onclick="runTest()">Predict</button>
+	<div class="result">
+	</div>
+	<script>
+		function runTest() {
+			var client_id = $("#client_id").val();
+			$.ajax({
+				url: "{{ url_for('test_predict') }}",
+				type: "POST",
+				data: {client_id: client_id},
+				success: function(data) {
+					// Display the results
+					$(".result").html(`<p>Prediction: ${data.prediction}</p>`);
+					$(".result").append(`<p>Loan status: ${data.loan_status}</p>`);
+				},
+				error: function(xhr, status, error) {
+					alert("An error occurred while running the test");
+				}
+			});
+		}
+	</script>
+</body>
+</html>
